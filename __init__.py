@@ -38,6 +38,20 @@ class TodoistTaskManager(MycroftSkill):
         self.speak_dialog('add.task', {'task_name': task_name})
        # self.api.sync()
 
+    @intent_handler('complete.task.intent')
+    def handle_complete_task(self, message):
+        task_count = 0
+        task_name = message.data.get('task_name')
+        self.api.sync()
+        for task in self.api.state['items']:
+            if task['content'].lower() == task_name.lower():
+                task_count += 1
+                item = self.api.items.get_by_id(task['id'])
+                item.complete()
+                self.api.commit()
+                self.log.info("Completed task '" + task['content'] + "'")
+        self.speak_dialog('complete.task', {'task_count': task_count})
+
     def check_for_mycroft_label(self):
         self.mycroft_label = "none"
         self.api.sync()

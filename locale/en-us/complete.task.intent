@@ -1,0 +1,5 @@
+complete task called {task_name}
+mark task {task_name} complete
+mark task {task_name} as completed
+mark task {task_name} as done
+check off task {task_name}
